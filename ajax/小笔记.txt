@@ -1,0 +1,37 @@
+最近在学PHP，然后可能遇到各种小白问题，记录下来当做自己成长的见证吧：
+wamp下localhost目录Your Projects下项目无法打开，但是在url中输入项目可以访问到。
+解决方案：
+找到www文件夹下的index.php文件，然后修改里面查找$projectContents，或直接查看338行代码，修改‘http://‘为‘http://localhost/‘即可...
+如果你已经配置好了8080端口,请改成http://localhost:8080/
+注意后面的斜杠不要忘记,,然后重启wamp；
+
+wamp下开启服务器的乱码问题：
+PHP乱码?Mysql乱码?
+PHP乱码或者mysql乱码,多半是因为没有统一编码,要解决PHP/mysql乱码,只要做到三码合一即可.
+所谓三码,是指文件编码,页面编码声明和数据库字符集,要使用相同的编码,如全部为utf-8.
+怎么做到三码合一?下面以utf-8为例,说明如何统一编码.
+
+1.将网页文件的编码保存为utf-8无BOM
+
+记事本,保存文件的时候选择"编码"为utf-8
+editPlus,保存时选择"encoding"为utf-8
+Notepadd++,按ctrl+A全选当前文档，选择菜单栏的Encoding-->Convert to UTF-8 without BOM
+UEStudio，保存时选择"格式"为utf-8无BOM其他软件请根据情况操作
+
+2.在PHP页面的<?php ?>标签对之间使用 header('Content-type : text/html; Charset=UTF-8'); 声明页面编码为utf-8
+
+在html头部(<head>和</head>之间)写入<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />来声明页面编码为utf-8
+
+3.PHP页面中连接数据库服务器后执行sql查询前使用以下代码先将字符集设置为utf-8
+以下方案任选一种，其中 $myqli 和 $pdo 是创建的mysqli和pdo类的对象实例
+mysql_query('SET NAMES utf8'); // mysql 扩展
+mysqli_query('SET NAMES utf8'); // mysqli 扩展
+$mysqli->query('SET NAMES utf8'); // mysqli 扩展
+$pdo->exec('SET NAMES utf8'); // PDO 扩展
+
+4.创建数据表的时候将默认编码设置为utf8,将字符校对(callate)设置为utf8_general_ci,注意MySQL里面是utf8而不是utf-8
+IF NOT EXISTS `name`(
+    ....代码....
+)ENGINE InnoDB DEFAULT CHARSET utf8 COLLATE utf8_general_ci;
+
+做到这四点,相信你的网页和数据库不会再乱码.

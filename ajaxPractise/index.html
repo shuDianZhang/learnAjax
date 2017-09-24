@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>瀑布流</title>
+    <style>
+        body{
+            padding: 0;
+        }
+        ul{
+            width: 1030px;
+            margin: 0 auto 20px;
+        }
+        li{
+            list-style: none;
+            width: 245px;
+            float: left;
+            margin-right: 10px;
+        }
+        li div{
+           border: 1px solid gainsboro;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+        li div img{
+            width: 225px;
+        }
+    </style>
+    <script type="text/javascript" src="ajax.js"></script>
+    <script>
+        window.onload = function(){
+
+
+            var oUl = document.getElementById('ul1');
+            var aLi = oUl.getElementsByTagName('li');
+            var iLen = aLi.length;
+            var iPage=1;
+            var door = true;
+
+            getList();
+
+            //初始化数据处理
+            function getList(){
+                    ajax('get','getPics.php','cpage='+iPage,function(data){
+                    var data = JSON.parse(data);
+                        if(!data.length){
+                            return  ;
+                        }
+                    for(var i=0 ; i<data.length; i++){
+                        var index = getShort();
+                        var oDiv = document.createElement('div');
+                        var oImg = document.createElement('img');
+                        oDiv.appendChild(oImg);
+                        oImg.src = data[i].preview;
+                        oImg.style.width = 225+'px';
+                        oImg.style.height = (data[i].height/(data[i].width/225))+'px';
+                        var oP = document.createElement('p');
+                        oP.innerHTML  = data[i].title;
+                        oDiv.appendChild(oP);
+                        aLi[index].appendChild(oDiv);
+                    }
+                        door = true;
+                });
+            }
+
+
+            window.onscroll = function(){
+                var index = getShort();
+                var oLi = aLi[index];
+                var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+                if(getTop(oLi)+ oLi.offsetHeight<document.documentElement.clientHeight+scrollTop){
+                    if(door){
+                        //把门随手关上
+                        door=false;
+                        iPage++;
+                        getList();
+                    }
+                }
+            }
+
+            //获取一个元素到页面的绝对值
+            function  getTop(obj){
+                var iTop = 0;
+                while(obj){
+                    iTop = iTop + obj.offsetTop;
+                    obj = obj.offsetParent;
+                }
+                return iTop;
+            }
+
+            //获取最短的li
+            function getShort(){
+                var index=0;
+                var ih = aLi[index].offsetHeight;
+                for(var i=1 ; i<iLen ; i++){
+                      if(aLi[i].offsetHeight<ih){
+                          index=i;
+                          ih = aLi[i].offsetHeight;
+                      }
+                }
+                return index;
+            }
+ }
+    </script>
+</head>
+<body>
+<ul id="ul1">
+    <!--<li>-->
+        <!--<div>-->
+            <!--<img src="http://s2.mogucdn.com/p2/161206/89849881_17d96b4klihg69hibj0d8c0lha3gf_640x960.jpg_240x360.v1cAC.70.webp"/>-->
+            <!--<p>【JY】秋冬新款韩版显瘦宽松中长款过膝提花针织开衫毛衣外套</p>-->
+        <!--</div>-->
+    <!--</li>-->
+    <li></li>
+    <li></li>
+    <li></li>
+    <li></li>
+</ul>
+</body>
+</html>

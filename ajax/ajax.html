@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        /*
+        ajax： 用javascript异步形式去操作xml;
+        数据交互
+        */
+        window.onload = function(){
+            var oBtn = document.getElementById('btn');
+            oBtn.onclick= function(){
+                //打开浏览器
+                /*
+                    1.创建一个ajax对象
+                        ie6以下：new ActiveXobject('Microsoft.XMLHttp');
+                                 ActiveXobject包括了n多组件
+
+                处理ie6兼容性问题：
+                方法一：
+                var xhr = null;
+                if(window.XMLHttpRequest){
+                    xhr =  new XMLHttpRequest();
+                }else{
+                    xhr = new ActiveXobject('Microsoft.XMLHttp');
+                }
+                方法二：
+                var xhr = null;
+                try{
+//                  代码尝试执行这个块中的内容，如果有错误，则会执行catch{} 并且传入错误信息参数
+                   xhr = new XMLHttprequest();
+//                throw new Error('错了错了');
+ //               手动抛错，就算没错，也会抛错，其错误信息‘错了错了’会传至参数 e
+                }catch(e){
+                   xhr = new ActiveXobject('Microsoft XMLHttp');
+                }
+          */
+                var xhr = new XMLHttpRequest();
+
+                /*
+                open方法：
+                参数
+                    1.打开方式
+                    2.地址
+                    3.是否异步
+                      1.同步：阻塞
+                      2.异步：非阻塞  前面的代码不会影响后面代码的执行
+                */
+                xhr.open('get','12.txt',true);
+                /*
+                    send();请求服务器
+                */
+                xhr.send();
+                /*
+                   等待服务器返回内容
+                   responseText : ajax请求返回的内容就被存放到这个属性下面
+                                   返回的一定是字符串
+                   readyState:  ajax工作状态
+                                0（初始化）：还没有调用open()方法；
+                                1（载入）：已调用send()方法，正在发送请求
+                                2（载入完成）send()方法完成，已收到全部响应内容
+                                3（解析）正在解析响应内容
+                                4（完成）响应内容解析完成，可以在客户端调用了
+                   on readystate change: 当readyState改变的时候触发
+                   status: 服务器状态 例如：404(not found) 4开头表明错误，2开头表明成功
+                */
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState==4){
+                        if(xhr.status ==200){
+                            alert(xhr.responseText);
+                        }else{
+                            alert('出错了，Err:'+ xhr.status);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+</head>
+<body>
+<input type="button" value="按钮" id="btn"/>
+</body>
+</html>

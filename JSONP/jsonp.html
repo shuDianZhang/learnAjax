@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script>
+        function fn1(data){
+            var oUl1 = document.getElementById('ul1');
+            var html = '';
+            for(var i=0 ; i<data.length ; i++){
+                html += '<li>'+data[i]+'</li>';
+            }
+            oUl1.innerHTML = html;
+        }
+
+        function fn2(data){
+            var oUl2 = document.getElementById('ul2');
+            var html = '';
+            for(var i=0 ; i<data.length ; i++){
+                html += '<li>'+data[i]+'</li>';
+            }
+            oUl2.innerHTML = html;
+        }
+    </script>
+    <!--<script src="1.txt"></script>-->
+    <script>
+        window.onload = function(){
+            var oBtn1 = document.getElementById('btn1');
+            var oBtn2 = document.getElementById('btn2');
+            oBtn1.onclick = function(){
+                //当按钮点击的时候再去加载远程资源，让它执行。
+                //通过DOM动态创建  <script src="1.txt">
+                var oScript = document.createElement('script');
+                oScript.src='getData.php?callback=fn1';
+                document.body.appendChild(oScript);
+            }
+
+
+            oBtn2.onclick = function(){
+                //当按钮点击的时候再去加载远程资源，让它执行。
+                //通过DOM动态创建  <script src="1.txt">
+                var oScript = document.createElement('script');
+                oScript.src='getData.php?callback=fn2';
+                document.body.appendChild(oScript);
+            }
+
+        }
+    </script>
+    <script>
+        /*
+         JSONP:  JSON width Padding
+         1.script标签
+         2.用script标签加载资源是没有跨域问题的 <script src="">
+         3.在资源加载进来之前定义好一个函数，这个函数接收一个参数（数据），
+         函数里面利用这个参数做一些事情；然后需要的时候通过script标签加载对应远程文件资源，
+         当远程资源被加载进来的时候，就会去执行我们前面定义好的函数，并且把数据当作这个函数
+         的参数传入进去。
+         */
+    </script>
+</head>
+<body>
+<input type="button" id="btn1" value="加载数字"/>
+<ul id="ul1"></ul>
+<input type="button" id="btn2" value="加载字母"/>
+<ul id="ul2"></ul>
+</body>
+</html>

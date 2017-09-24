@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>自动刷新</title>
+    <script>
+        function ajax(method,url,data,success){
+            var xhr = new XMLHttpRequest();
+            if(method=='get'&&data){
+                url+='?'+data;
+            }
+            xhr.open(method,url,true);
+            if(method=='get'){
+                xhr.send();
+            }else{
+                xhr.setRequestHeader('content-type','application/x-www-form-urlencoded');
+                xhr.send(data);
+            }
+            xhr.send();
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState==4){
+                    if(xhr.status == 200){
+                        success&&success(xhr.responseText);
+                    }else{
+                        alert('出错了，Err:'+ xhr.status);
+                    }
+                }
+            }
+        }
+    </script>
+    <script>
+        window.onload = function(){
+            var oBtn = document.getElementById('btn');
+            oBtn.onclick= function(){
+                ajax('get','getNews.php','',function(data){
+                    var data = JSON.parse(data);
+                    var oUl = document.getElementById('ul1');
+                    var html = '';
+                    for(var i=0; i<data.length; i++){
+                        html += '<li><a href="">'+data[i].title+'</a><span>'+data[i].data+'</span></li> ';
+                    }
+                    oUl.innerHTML = html;
+                });
+
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="按钮" id="btn"/>
+<ul id="ul1">
+</ul>
+</body>
+</html>

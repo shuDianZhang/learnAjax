@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>百度</title>
+    <style>
+        #q{
+            width: 300px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid pink;
+            font-size: 16px;
+        }
+        #ul1{
+            border: 1px solid pink;
+            width: 310px;
+            margin: 0;
+            padding: 0;
+            display: none;
+        }
+        li a{
+            line-height: 30px;
+            padding: 5px;
+            text-decoration: none;
+            color: black;
+            display: block;
+        }
+        li a:hover{
+            background-color: gainsboro;
+            color: white;
+        }
+    </style>
+    <script>
+        function getData(data){
+             var oQ = document.getElementById('q');
+             var oUl = document.getElementById('ul1');
+             var html='';
+              if(data.s.length){
+                  oUl.style.display = 'block';
+                  for(var i=0 ; i<data.s.length; i++){
+                      html += '<li><a href="">'+data.s[i]+'</a></li>';
+                  }
+                  oUl.innerHTML = html;
+              }
+        }
+    </script>
+    <script>
+        window.onload = function(){
+            var oQ = document.getElementById('q');
+            var oUl = document.getElementById('ul1');
+            oQ.onkeyup = function(){
+                if(this.value!=''){
+                    var oScript = document.createElement('script');
+                    oScript.src ='https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?cb=getData&wd='+this.value;
+                    document.body.appendChild(oScript);
+                }else{
+                    oUl.style.display = 'none';
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="text" id="q"/>
+<ul id="ul1">
+    <li><a href="">1111111</a></li>
+    <li><a href="">2222222</a></li>
+    <li><a href="">3333333</a></li>
+    <li><a href="">4444444</a></li>
+</ul>
+</body>
+</html>

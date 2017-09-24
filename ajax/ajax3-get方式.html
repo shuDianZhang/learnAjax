@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="JSON.js"></script>
+    <script>
+        window.onload = function(){
+            var oBtn = document.getElementById('btn');
+            oBtn.onclick= function(){
+                var xhr=null;
+                try{
+                   xhr = new XMLHttpRequest();
+                }catch(e){
+                    xhr = new ActiveXObject('Microsoft.XMLHttp');
+                }
+                /*
+                   1.缓存  在url?后面连接一个随机数，例如：&后加上时间戳
+                   2.乱码  编码encodeURI
+                 */
+                xhr.open('get', '2.get.php?username='+encodeURI('舒健')+'&age=20&'+new Date().getTime(),true);
+                xhr.send();
+                xhr.onreadystatechange = function(){
+                    if(xhr.readyState==4){
+                        if(xhr.status == 200){
+                           alert(xhr.responseText);
+                        }else{
+                            alert('出错了，Err:'+ xhr.status);
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body>
+<input type="button" value="按钮" id="btn"/>
+</body>
+</html>
